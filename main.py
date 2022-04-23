@@ -1,20 +1,49 @@
-# This is a sample Python script.
+import time
+import telebot
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-import requests
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-    x = requests.get('https://w3schools.com/python/demopage.htm')
-
-    print(x.text)
+TOKEN = "5331277773:AAFLMHVaR_8ZSLrrVaTX6As7M9tfuBCLOZE"
+bot = telebot.TeleBot(TOKEN)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+def findat(msg):
+    # from a list of texts, it finds the one with the '@' sign
+    for i in msg:
+        if '@' in i:
+            return i
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+@bot.message_handler(commands=['start'])  # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, '(placeholder text)')
+
+
+@bot.message_handler(commands=['toan'])  # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, '(ok, tao là toàn)')
+
+
+@bot.message_handler(commands=['help'])  # help message handler
+def send_welcome(message):
+    bot.reply_to(message, 'ALPHA = FEATURES MAY NOT WORK')
+
+
+@bot.message_handler(func=lambda msg: msg.text is not None and '@' in msg.text)
+# lambda function finds messages with the '@' sign in them
+# in case msg.text doesn't exist, the handler doesn't process it
+def at_converter(message):
+    texts = message.text.split()
+    at_text = findat(texts)
+    if at_text == '@':  # in case it's just the '@', skip
+        pass
+    else:
+        insta_link = "https://instagram.com/{}".format(at_text[1:])
+        bot.reply_to(message, insta_link)
+
+
+while True:
+    try:
+        bot.polling(none_stop=True)
+        # ConnectionError and ReadTimeout because of possible timout of the requests library
+        # maybe there are others, therefore Exception
+    except Exception:
+        time.sleep(15)
