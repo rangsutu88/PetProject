@@ -22,6 +22,16 @@ def send_welcome(message):
     bot.reply_to(message, '(ok, tao là toàn)')
 
 
+@bot.message_handler(commands=['a'])  # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, '(ok, tao là a)')
+
+
+@bot.message_handler(commands=['b'])  # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, '(ok, tao là b)')
+
+
 @bot.message_handler(commands=['help'])  # help message handler
 def send_welcome(message):
     bot.reply_to(message, 'ALPHA = FEATURES MAY NOT WORK')
