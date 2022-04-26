@@ -1,53 +1,29 @@
 import time
 import telebot
+from binance import Client, ThreadedWebsocketManager, ThreadedDepthCacheManager
+from tradingview_ta import TA_Handler, Interval, Exchange
+
+api_key = "wlt9AdgeaS3RWaFwWr2pfQN9O0hlSWdnBLQhayZHoT9XpEnuD5p2IvmM5DoZI0Xf"
+api_secret = "D3e8p6UqnHuZaQdVDoaDU5svB60xTWSjjv0JLCmBOFM6fk5qoL4tjJTJHE1DfuMG"
+client = Client(api_key, api_secret)
 
 TOKEN = "5331277773:AAFLMHVaR_8ZSLrrVaTX6As7M9tfuBCLOZE"
 bot = telebot.TeleBot(TOKEN)
 
 
-def findat(msg):
-    # from a list of texts, it finds the one with the '@' sign
-    for i in msg:
-        if '@' in i:
-            return i
-
-
-@bot.message_handler(commands=['start'])  # welcome message handler
-def send_welcome(message):
-    bot.reply_to(message, '(placeholder text)')
-
-
-@bot.message_handler(commands=['toan'])  # welcome message handler
-def send_welcome(message):
-    bot.reply_to(message, '(ok, tao là toàn)')
 
 
 @bot.message_handler(commands=['a'])  # welcome message handler
 def send_welcome(message):
-    bot.reply_to(message, '(ok, tao là a)')
+    tesla = TA_Handler(
+        symbol="TSLA",
+        screener="america",
+        exchange="NASDAQ",
+        interval=Interval.INTERVAL_1_DAY,
+    )
 
+    bot.reply_to(message, tesla.get_analysis().summary)
 
-@bot.message_handler(commands=['b'])  # welcome message handler
-def send_welcome(message):
-    bot.reply_to(message, '(ok, tao là b)')
-
-
-@bot.message_handler(commands=['help'])  # help message handler
-def send_welcome(message):
-    bot.reply_to(message, 'ALPHA = FEATURES MAY NOT WORK')
-
-
-@bot.message_handler(func=lambda msg: msg.text is not None and '@' in msg.text)
-# lambda function finds messages with the '@' sign in them
-# in case msg.text doesn't exist, the handler doesn't process it
-def at_converter(message):
-    texts = message.text.split()
-    at_text = findat(texts)
-    if at_text == '@':  # in case it's just the '@', skip
-        pass
-    else:
-        insta_link = "https://instagram.com/{}".format(at_text[1:])
-        bot.reply_to(message, insta_link)
 
 
 while True:
