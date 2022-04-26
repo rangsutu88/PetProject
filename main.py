@@ -1,7 +1,7 @@
 import time
 import telebot
-from binance import Client, ThreadedWebsocketManager, ThreadedDepthCacheManager
-from tradingview_ta import TA_Handler, Interval, Exchange
+from binance import Client
+from tradingview_ta import TA_Handler, Interval
 
 api_key = "wlt9AdgeaS3RWaFwWr2pfQN9O0hlSWdnBLQhayZHoT9XpEnuD5p2IvmM5DoZI0Xf"
 api_secret = "D3e8p6UqnHuZaQdVDoaDU5svB60xTWSjjv0JLCmBOFM6fk5qoL4tjJTJHE1DfuMG"
@@ -9,8 +9,6 @@ client = Client(api_key, api_secret)
 
 TOKEN = "5331277773:AAFLMHVaR_8ZSLrrVaTX6As7M9tfuBCLOZE"
 bot = telebot.TeleBot(TOKEN)
-
-
 
 
 @bot.message_handler(commands=['a'])  # welcome message handler
@@ -23,7 +21,6 @@ def send_welcome(message):
     )
 
     bot.reply_to(message, tesla.get_analysis().summary)
-
 
 
 while True:
